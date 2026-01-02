@@ -5,7 +5,8 @@ import { useVehicle } from '@/lib/vehicle-context';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AlertCircle, Plus, Wrench, Calendar } from 'lucide-react';
+import { AlertCircle, Plus, Wrench, Calendar, Shield } from 'lucide-react';
+import Link from 'next/link';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import VehicleSelector from '@/components/vehicle-selector';
 import VehicleManager from '@/components/vehicle-manager';
@@ -45,14 +46,27 @@ export default function Home() {
                 </h1>
                 <p className="text-muted-foreground mt-1">Personal vehicle maintenance tracker</p>
               </div>
-              <Button
-                onClick={() => setShowVehicleManager(true)}
-                size="lg"
-                className="bg-btn-blue hover:bg-btn-blue/80 text-btn-blue-foreground"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Add Vehicle
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="border-border text-foreground hover:bg-muted"
+                >
+                  <Link href="/admin">
+                    <Shield className="h-4 w-4 mr-2" />
+                    Admin
+                  </Link>
+                </Button>
+                <Button
+                  onClick={() => setShowVehicleManager(true)}
+                  size="lg"
+                  className="bg-btn-blue hover:bg-btn-blue/80 text-btn-blue-foreground"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Vehicle
+                </Button>
+              </div>
             </div>
 
             <VehicleSelector />
@@ -70,13 +84,26 @@ export default function Home() {
           ) : selectedVehicle ? (
             <>
               <div className="mb-6">
-                <h2 className="text-2xl font-bold text-white mb-2">
-                  {selectedVehicle.year} {selectedVehicle.make} {selectedVehicle.model}
-                </h2>
-                <p className="text-muted-foreground mb-4">
-                  Engine: {selectedVehicle.engine} | Transmission: {selectedVehicle.transmission}
-                </p>
-                <MileageReminders vehicleId={selectedVehicle.id} />
+                <div className="flex gap-6 items-start flex-col md:flex-row">
+                  {selectedVehicle.image_url && (
+                    <div className="w-full md:w-48 h-48 rounded-lg overflow-hidden border border-border bg-muted flex-shrink-0">
+                      <img
+                        src={selectedVehicle.image_url}
+                        alt={`${selectedVehicle.year} ${selectedVehicle.make} ${selectedVehicle.model}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold text-white mb-2">
+                      {selectedVehicle.year} {selectedVehicle.make} {selectedVehicle.model}
+                    </h2>
+                    <p className="text-muted-foreground mb-4">
+                      Engine: {selectedVehicle.engine} | Transmission: {selectedVehicle.transmission}
+                    </p>
+                    <MileageReminders vehicleId={selectedVehicle.id} />
+                  </div>
+                </div>
               </div>
 
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">

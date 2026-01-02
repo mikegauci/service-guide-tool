@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useVehicle } from '@/lib/vehicle-context';
+import { uploadVehicleImage } from '@/lib/upload-image';
 import {
   Dialog,
   DialogContent,
@@ -23,6 +24,8 @@ interface VehicleManagerProps {
 
 export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps) {
   const { addVehicle, deleteVehicle, vehicles, updateVehicle } = useVehicle();
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
   const [formData, setFormData] = useState({
     year: new Date().getFullYear(),
     make: '',
@@ -31,8 +34,36 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
     transmission: '',
     current_mileage: 0,
     notes: '',
+    image_url: '',
+    purchase_date: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image must be less than 5MB');
+        return;
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('File must be an image');
+        return;
+      }
+
+      setImageFile(file);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +74,21 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
 
     setIsSubmitting(true);
     try {
-      await addVehicle(formData);
+      let imageUrl = formData.image_url;
+
+      // Upload image if selected
+      if (imageFile) {
+        const uploadedUrl = await uploadVehicleImage(imageFile);
+        if (uploadedUrl) {
+          imageUrl = uploadedUrl;
+        } else {
+          toast.error('Failed to upload image');
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      await addVehicle({ ...formData, image_url: imageUrl });
       toast.success('Vehicle added successfully');
       setFormData({
         year: new Date().getFullYear(),
@@ -53,7 +98,11 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
         transmission: '',
         current_mileage: 0,
         notes: '',
+        image_url: '',
+        purchase_date: '',
       });
+      setImageFile(null);
+      setImagePreview('');
       onClose();
     } catch (error) {
       toast.error('Failed to add vehicle');
@@ -158,6 +207,38 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
             </div>
 
             <div>
+              <Label className="text-foreground">Purchase Date</Label>
+              <Input
+                type="date"
+                value={formData.purchase_date}
+                onChange={(e) => setFormData({ ...formData, purchase_date: e.target.value })}
+                className="bg-muted border-border text-white mt-1"
+              />
+            </div>
+
+            <div>
+              <Label className="text-foreground">Vehicle Image</Label>
+              <Input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="bg-muted border-border text-white mt-1 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-btn-blue file:text-btn-blue-foreground hover:file:bg-btn-blue/80"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                Optional: Upload an image of your vehicle (max 5MB)
+              </p>
+              {imagePreview && (
+                <div className="mt-3">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full max-w-xs h-48 object-cover rounded border border-border"
+                  />
+                </div>
+              )}
+            </div>
+
+            <div>
               <Label className="text-foreground">Notes</Label>
               <Input
                 value={formData.notes}
@@ -185,13 +266,24 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
                     key={vehicle.id}
                     className="bg-muted border-border flex items-center justify-between p-4"
                   >
-                    <div>
-                      <p className="font-semibold text-white">
-                        {vehicle.year} {vehicle.make} {vehicle.model}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {vehicle.current_mileage.toLocaleString()} km
-                      </p>
+                    <div className="flex items-center gap-3 flex-1">
+                      {vehicle.image_url && (
+                        <div className="w-12 h-12 rounded overflow-hidden bg-card flex-shrink-0">
+                          <img
+                            src={vehicle.image_url}
+                            alt={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-semibold text-white">
+                          {vehicle.year} {vehicle.make} {vehicle.model}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {vehicle.current_mileage.toLocaleString()} km
+                        </p>
+                      </div>
                     </div>
                     <Button
                       onClick={() => handleDelete(vehicle.id)}

@@ -7,6 +7,8 @@ export interface Vehicle {
   transmission: string;
   current_mileage: number;
   notes: string;
+  image_url: string;
+  purchase_date: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -88,6 +90,7 @@ export interface ServiceReminder {
   service_type: string;
   mileage_interval: number;
   last_service_mileage: number;
+  time_interval_months: number | null;
   created_at: string;
   updated_at: string;
 }
