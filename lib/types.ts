@@ -96,3 +96,15 @@ export interface ServiceReminder {
   created_at: string;
   updated_at: string;
 }
+
+export interface VehicleIssue {
+  id: string;
+  vehicle_id: string;
+  title: string;
+  description: string;
+  image_url: string | null;
+  status: 'open' | 'in_progress' | 'resolved';
+  priority: 'low' | 'medium' | 'high';
+  created_at: string;
+  updated_at: string;
+}

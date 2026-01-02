@@ -12,6 +12,7 @@ import InspectionAdmin from '@/components/admin/inspection-admin';
 import DiagnosticsAdmin from '@/components/admin/diagnostics-admin';
 import VideosAdmin from '@/components/admin/videos-admin';
 import RemindersAdmin from '@/components/admin/reminders-admin';
+import IssuesAdmin from '@/components/admin/issues-admin';
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('vehicles');
@@ -50,7 +51,7 @@ export default function AdminPage() {
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-6 bg-muted mb-8">
+                <TabsList className="grid w-full grid-cols-4 md:grid-cols-7 bg-muted mb-8">
                   <TabsTrigger value="vehicles" className="text-xs md:text-sm">
                     Vehicles
                   </TabsTrigger>
@@ -62,6 +63,9 @@ export default function AdminPage() {
                   </TabsTrigger>
                   <TabsTrigger value="diagnostics" className="text-xs md:text-sm">
                     Diagnostics
+                  </TabsTrigger>
+                  <TabsTrigger value="issues" className="text-xs md:text-sm">
+                    Issues
                   </TabsTrigger>
                   <TabsTrigger value="videos" className="text-xs md:text-sm">
                     Videos
@@ -85,6 +89,10 @@ export default function AdminPage() {
 
                 <TabsContent value="diagnostics">
                   <DiagnosticsAdmin />
+                </TabsContent>
+
+                <TabsContent value="issues">
+                  <IssuesAdmin />
                 </TabsContent>
 
                 <TabsContent value="videos">

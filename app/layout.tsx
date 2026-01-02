@@ -7,6 +7,7 @@ import { Toaster } from 'sonner';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'),
   title: 'Service Guide Tool',
   description: 'Personal vehicle service guide and maintenance tracker',
   robots: {

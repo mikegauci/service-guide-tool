@@ -17,6 +17,7 @@ import DiagnosticsSection from '@/components/sections/diagnostics-section';
 import VideoSection from '@/components/sections/video-section';
 import ServiceHistorySection from '@/components/sections/service-history-section';
 import MileageReminders from '@/components/mileage-reminders';
+import IssuesSection from '@/components/sections/issues-section';
 
 export default function Home() {
   const { selectedVehicle, vehicles, loading } = useVehicle();
@@ -200,23 +201,23 @@ export default function Home() {
               </div>
 
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-5 bg-card mb-8">
-                  <TabsTrigger value="overview" className="text-xs md:text-sm">
+                <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 bg-card mb-8 h-auto py-2 gap-2">
+                  <TabsTrigger value="overview" className="text-xs md:text-sm h-10">
                     Overview
                   </TabsTrigger>
-                  <TabsTrigger value="reminders" className="text-xs md:text-sm">
+                  <TabsTrigger value="reminders" className="text-xs md:text-sm h-10">
                     Reminders
                   </TabsTrigger>
-                  <TabsTrigger value="parts" className="text-xs md:text-sm">
+                  <TabsTrigger value="parts" className="text-xs md:text-sm h-10">
                     Parts
                   </TabsTrigger>
-                  <TabsTrigger value="inspection" className="text-xs md:text-sm">
+                  <TabsTrigger value="inspection" className="text-xs md:text-sm h-10">
                     Inspection
                   </TabsTrigger>
-                  {/* <TabsTrigger value="diagnostics" className="text-xs md:text-sm">
-                    Diagnostics
-                  </TabsTrigger> */}
-                  <TabsTrigger value="videos" className="text-xs md:text-sm">
+                  <TabsTrigger value="issues" className="text-xs md:text-sm h-10">
+                    Issues
+                  </TabsTrigger>
+                  <TabsTrigger value="videos" className="text-xs md:text-sm h-10">
                     Videos
                   </TabsTrigger>
                 </TabsList>
@@ -248,6 +249,12 @@ export default function Home() {
                 <TabsContent value="diagnostics" className="space-y-6" forceMount>
                   <div className={activeTab !== 'diagnostics' ? 'hidden' : ''}>
                     <DiagnosticsSection vehicleId={selectedVehicle.id} />
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="issues" className="space-y-6" forceMount>
+                  <div className={activeTab !== 'issues' ? 'hidden' : ''}>
+                    <IssuesSection vehicleId={selectedVehicle.id} />
                   </div>
                 </TabsContent>
 
