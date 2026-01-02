@@ -312,16 +312,16 @@ export default function IssuesSection({ vehicleId }: IssuesSectionProps) {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2 mb-4">
+          <div className="flex flex-wrap gap-2 mb-4">
             <Button
               variant={filterStatus === 'all' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setFilterStatus('all')}
-              className={
+              className={`text-xs md:text-sm ${
                 filterStatus === 'all'
                   ? 'bg-btn-blue text-btn-blue-foreground'
                   : 'border-border text-foreground'
-              }
+              }`}
             >
               All ({issues.length})
             </Button>
@@ -329,11 +329,11 @@ export default function IssuesSection({ vehicleId }: IssuesSectionProps) {
               variant={filterStatus === 'open' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setFilterStatus('open')}
-              className={
+              className={`text-xs md:text-sm ${
                 filterStatus === 'open'
                   ? 'bg-btn-blue text-btn-blue-foreground'
                   : 'border-border text-foreground'
-              }
+              }`}
             >
               Open ({issues.filter((i) => i.status === 'open').length})
             </Button>
@@ -341,11 +341,11 @@ export default function IssuesSection({ vehicleId }: IssuesSectionProps) {
               variant={filterStatus === 'in_progress' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setFilterStatus('in_progress')}
-              className={
+              className={`text-xs md:text-sm ${
                 filterStatus === 'in_progress'
                   ? 'bg-btn-blue text-btn-blue-foreground'
                   : 'border-border text-foreground'
-              }
+              }`}
             >
               In Progress ({issues.filter((i) => i.status === 'in_progress').length})
             </Button>
@@ -353,11 +353,11 @@ export default function IssuesSection({ vehicleId }: IssuesSectionProps) {
               variant={filterStatus === 'resolved' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setFilterStatus('resolved')}
-              className={
+              className={`text-xs md:text-sm ${
                 filterStatus === 'resolved'
                   ? 'bg-btn-blue text-btn-blue-foreground'
                   : 'border-border text-foreground'
-              }
+              }`}
             >
               Resolved ({issues.filter((i) => i.status === 'resolved').length})
             </Button>
