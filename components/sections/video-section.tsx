@@ -58,6 +58,36 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
     localStorage.setItem(`watched-videos-${vehicleId}`, JSON.stringify(Array.from(newWatched)));
   };
 
+  const getYouTubeThumbnail = (youtubeLink: string) => {
+    // Extract video ID from various YouTube URL formats
+    let videoId = '';
+    
+    try {
+      const url = new URL(youtubeLink);
+      
+      // Format: https://www.youtube.com/watch?v=VIDEO_ID
+      if (url.hostname.includes('youtube.com') && url.searchParams.has('v')) {
+        videoId = url.searchParams.get('v') || '';
+      }
+      // Format: https://youtu.be/VIDEO_ID
+      else if (url.hostname === 'youtu.be') {
+        videoId = url.pathname.slice(1);
+      }
+      // Format: https://www.youtube.com/embed/VIDEO_ID
+      else if (url.pathname.includes('/embed/')) {
+        videoId = url.pathname.split('/embed/')[1];
+      }
+    } catch (e) {
+      console.error('Invalid YouTube URL:', e);
+      return null;
+    }
+
+    if (!videoId) return null;
+    
+    // Return YouTube thumbnail URL (high quality)
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  };
+
   const getFilteredVideos = () => {
     let filtered = videos;
 
@@ -146,13 +176,35 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
           <div key={category} className="space-y-3">
             <h3 className="text-lg font-semibold text-white px-1">{category}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {groupedVideos[category].map((video) => (
+              {groupedVideos[category].map((video) => {
+                const thumbnail = getYouTubeThumbnail(video.youtube_link);
+                
+                return (
                 <Card
                   key={video.id}
                   className={`border-border overflow-hidden ${
                     watchedVideos.has(video.id) ? 'bg-card/50' : 'bg-card'
                   }`}
                 >
+                  {thumbnail && (
+                    <a
+                      href={video.youtube_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block relative w-full aspect-video bg-black overflow-hidden cursor-pointer group"
+                    >
+                      <img
+                        src={thumbnail}
+                        alt={video.title}
+                        className={`w-full h-full object-cover ${
+                          watchedVideos.has(video.id) ? 'opacity-50' : ''
+                        }`}
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/50 transition-colors">
+                        <PlayCircle className="h-16 w-16 text-white opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all" />
+                      </div>
+                    </a>
+                  )}
                   <CardContent className="p-4 space-y-3">
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-2">
@@ -215,7 +267,8 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+                );
+              })}
             </div>
           </div>
         ))

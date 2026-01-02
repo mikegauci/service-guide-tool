@@ -13,6 +13,10 @@ export const metadata: Metadata = {
     index: false,
     follow: false,
   },
+  icons: {
+    icon: '/icon.svg',
+    apple: '/apple-icon.svg',
+  },
   openGraph: {
     images: [
       {
