@@ -31,6 +31,7 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
+    service_type: '',
     service_date: new Date().toISOString().split('T')[0],
     mileage_at_service: selectedVehicle?.current_mileage || 0,
     mechanic_name: '',
@@ -71,6 +72,10 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.service_type) {
+      toast.error('Please enter service type');
+      return;
+    }
     if (!formData.mechanic_name) {
       toast.error('Please enter mechanic name');
       return;
@@ -102,6 +107,7 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
 
       toast.success('Service record created');
       setFormData({
+        service_type: '',
         service_date: new Date().toISOString().split('T')[0],
         mileage_at_service: selectedVehicle?.current_mileage || 0,
         mechanic_name: '',
@@ -163,6 +169,19 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
               </DialogHeader>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <Label className="text-foreground">Service Type *</Label>
+                  <Input
+                    value={formData.service_type}
+                    onChange={(e) =>
+                      setFormData({ ...formData, service_type: e.target.value })
+                    }
+                    placeholder="e.g., Oil Change & Filter, Brake Fluid Replacement"
+                    className="bg-muted border-border text-white mt-1"
+                    required
+                  />
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label className="text-foreground">Service Date</Label>
@@ -277,6 +296,11 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
               <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-4 flex-col md:flex-row">
                   <div className="flex-1">
+                    {service.service_type && (
+                      <p className="font-bold text-btn-green text-lg mb-2">
+                        {service.service_type}
+                      </p>
+                    )}
                     <div className="flex items-center gap-2 mb-2">
                       <Calendar className="h-4 w-4 text-btn-blue" />
                       <p className="font-semibold text-white">

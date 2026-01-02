@@ -41,6 +41,7 @@ export interface InspectionTemplate {
 export interface ServiceHistory {
   id: string;
   vehicle_id: string;
+  service_type: string;
   service_date: string;
   mileage_at_service: number;
   mechanic_name: string;
