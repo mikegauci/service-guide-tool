@@ -19,7 +19,7 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto">
-        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+        <header className="border-b border-border bg-card/50 backdrop-blur-sm">
           <div className="px-4 py-6">
             <div className="flex items-center justify-between gap-3 mb-6">
               <div className="flex items-center gap-3">

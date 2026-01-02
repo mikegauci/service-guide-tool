@@ -23,6 +23,7 @@ export interface Part {
   price_eur: number;
   compatibility_notes: string;
   category: string;
+  approved_by_mechanic: boolean;
   created_at: string;
   updated_at: string;
 }

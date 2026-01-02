@@ -117,15 +117,15 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto">
-        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-          <div className="px-4 py-6">
-            <div className="flex items-center justify-between gap-4 mb-6 flex-col md:flex-row">
+        <header className="border-b border-border bg-card/50 backdrop-blur-sm">
+          <div className="px-4 py-4 md:py-6">
+            <div className="flex items-center justify-between gap-3 md:gap-4 mb-4 md:mb-6 flex-col md:flex-row">
               <div>
-                <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-                  <Wrench className="h-8 w-8 text-btn-blue" />
-                  Service Guide Tool
+                <h1 className="text-xl md:text-3xl font-bold text-white flex items-center gap-2">
+                  <Wrench className="h-6 w-6 md:h-8 md:w-8 text-btn-blue" />
+                  Mike's Service Guide Tool
                 </h1>
-                <p className="text-muted-foreground mt-1">Personal vehicle maintenance tracker</p>
+                <p className="text-sm md:text-base text-muted-foreground mt-1">Personal vehicle maintenance tracker</p>
               </div>
               <div className="flex gap-2">
                 {/* <Button
@@ -139,14 +139,14 @@ export default function Home() {
                     Admin
                   </Link>
                 </Button> */}
-                <Button
+                {/* <Button
                   onClick={() => setShowVehicleManager(true)}
                   size="lg"
                   className="bg-btn-blue hover:bg-btn-blue/80 text-btn-blue-foreground"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Vehicle
-                </Button>
+                </Button> */}
               </div>
             </div>
 

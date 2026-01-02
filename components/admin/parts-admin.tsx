@@ -46,6 +46,7 @@ export default function PartsAdmin() {
     price_eur: 0,
     compatibility_notes: '',
     category: 'Engine',
+    approved_by_mechanic: false,
   });
 
   useEffect(() => {
@@ -111,6 +112,7 @@ export default function PartsAdmin() {
       price_eur: part.price_eur,
       compatibility_notes: part.compatibility_notes,
       category: part.category,
+      approved_by_mechanic: part.approved_by_mechanic,
     });
     setIsOpen(true);
   };
@@ -139,6 +141,7 @@ export default function PartsAdmin() {
       price_eur: 0,
       compatibility_notes: '',
       category: 'Engine',
+      approved_by_mechanic: false,
     });
     setEditingPart(null);
     setIsOpen(false);

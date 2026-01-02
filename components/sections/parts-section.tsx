@@ -7,7 +7,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { ExternalLink, Search } from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { ExternalLink, Search, Plus } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface PartsSectionProps {
   vehicleId: string;
@@ -15,10 +25,20 @@ interface PartsSectionProps {
 
 export default function PartsSection({ vehicleId }: PartsSectionProps) {
   const [parts, setParts] = useState<Part[]>([]);
-  const [selectedParts, setSelectedParts] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    specifications: '',
+    supplier_name: '',
+    purchase_link: '',
+    price_eur: 0,
+    compatibility_notes: '',
+    category: 'Engine',
+  });
 
   useEffect(() => {
     loadParts();
@@ -42,14 +62,75 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
     }
   };
 
-  const togglePart = (partId: string) => {
-    const newSelected = new Set(selectedParts);
-    if (newSelected.has(partId)) {
-      newSelected.delete(partId);
-    } else {
-      newSelected.add(partId);
+  const togglePart = async (partId: string) => {
+    const part = parts.find(p => p.id === partId);
+    if (!part) return;
+
+    const newApprovedState = !part.approved_by_mechanic;
+
+    try {
+      const { error } = await supabase
+        .from('parts')
+        .update({ approved_by_mechanic: newApprovedState })
+        .eq('id', partId);
+
+      if (error) throw error;
+
+      // Update local state
+      setParts(parts.map(p => 
+        p.id === partId 
+          ? { ...p, approved_by_mechanic: newApprovedState }
+          : p
+      ));
+    } catch (error) {
+      console.error('Error updating part approval:', error);
     }
-    setSelectedParts(newSelected);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.name || !formData.supplier_name) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const { data, error } = await supabase
+        .from('parts')
+        .insert([
+          {
+            vehicle_id: vehicleId,
+            ...formData,
+            approved_by_mechanic: false,
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      setParts([...parts, data]);
+      toast.success('Part added successfully');
+      resetForm();
+    } catch (error) {
+      toast.error('Failed to add part');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      specifications: '',
+      supplier_name: '',
+      purchase_link: '',
+      price_eur: 0,
+      compatibility_notes: '',
+      category: 'Engine',
+    });
+    setIsOpen(false);
   };
 
   const getFilteredParts = () => {
@@ -82,10 +163,8 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
   );
 
   const categories = Object.keys(groupedParts).sort();
-  const selectedTotal = Array.from(selectedParts).reduce((sum, id) => {
-    const part = parts.find((p) => p.id === id);
-    return sum + (part?.price_eur || 0);
-  }, 0);
+  const approvedParts = parts.filter(p => p.approved_by_mechanic);
+  const selectedTotal = approvedParts.reduce((sum, part) => sum + part.price_eur, 0);
 
   if (loading) {
     return <div className="text-white">Loading parts...</div>;
@@ -94,8 +173,15 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
   return (
     <div className="space-y-6">
       <Card className="bg-card border-border">
-        <CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <CardTitle className="text-white">Parts List & Purchasing</CardTitle>
+          <Button
+            onClick={() => setIsOpen(true)}
+            className="bg-btn-green hover:bg-btn-green/80 text-btn-green-foreground"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Part
+          </Button>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-4 flex-col md:flex-row">
@@ -124,11 +210,14 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
 
           {selectedTotal > 0 && (
             <div className="bg-btn-blue/10 border border-btn-blue/50 rounded-md p-3">
+              <p className="text-xs text-btn-blue font-semibold mb-1">
+                ✓ Approved to purchase by mechanic
+              </p>
               <p className="text-white font-semibold">
                 Selected Total: €{selectedTotal.toFixed(2)}
               </p>
               <p className="text-sm text-muted-foreground">
-                {selectedParts.size} item(s) selected
+                {approvedParts.length} item(s) selected
               </p>
             </div>
           )}
@@ -151,7 +240,7 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
                   <CardContent className="p-4 space-y-3">
                     <div className="flex gap-3">
                       <Checkbox
-                        checked={selectedParts.has(part.id)}
+                        checked={part.approved_by_mechanic}
                         onCheckedChange={() => togglePart(part.id)}
                         className="mt-1"
                       />
@@ -183,8 +272,8 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
                         className="w-full bg-btn-white hover:bg-btn-white/80 text-btn-white-foreground"
                       >
                         <a href={part.purchase_link} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Buy Now
+                          Link to Part
+                          <ExternalLink className="h-4 w-4 ml-2 mb-0.5" />
                         </a>
                       </Button>
                     )}
@@ -195,6 +284,124 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
           </div>
         ))
       )}
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="text-white">Add New Part</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Add a new part to your vehicle's parts list
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <Label className="text-foreground">Part Name *</Label>
+              <Input
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="e.g., Hawk Brake Pads"
+                className="bg-muted border-border text-white mt-1"
+                required
+              />
+            </div>
+
+            <div>
+              <Label className="text-foreground">Category *</Label>
+              <select
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="w-full bg-muted border border-border text-white rounded-md px-3 py-2 mt-1"
+                required
+              >
+                <option value="Engine">Engine</option>
+                <option value="Brake System">Brake System</option>
+                <option value="Cooling System">Cooling System</option>
+                <option value="Suspension">Suspension</option>
+                <option value="Exhaust">Exhaust</option>
+                <option value="Transmission">Transmission</option>
+                <option value="Electrical">Electrical</option>
+                <option value="Body">Body</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div>
+              <Label className="text-foreground">Specifications</Label>
+              <Textarea
+                value={formData.specifications}
+                onChange={(e) => setFormData({ ...formData, specifications: e.target.value })}
+                placeholder="Part specifications and details..."
+                className="bg-muted border-border text-white mt-1 min-h-[80px]"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-foreground">Supplier Name *</Label>
+                <Input
+                  value={formData.supplier_name}
+                  onChange={(e) => setFormData({ ...formData, supplier_name: e.target.value })}
+                  placeholder="e.g., OEM Parts Supplier"
+                  className="bg-muted border-border text-white mt-1"
+                  required
+                />
+              </div>
+              <div>
+                <Label className="text-foreground">Price (EUR) *</Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={formData.price_eur}
+                  onChange={(e) => setFormData({ ...formData, price_eur: parseFloat(e.target.value) })}
+                  placeholder="0.00"
+                  className="bg-muted border-border text-white mt-1"
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label className="text-foreground">Purchase Link</Label>
+              <Input
+                value={formData.purchase_link}
+                onChange={(e) => setFormData({ ...formData, purchase_link: e.target.value })}
+                placeholder="https://..."
+                className="bg-muted border-border text-white mt-1"
+              />
+            </div>
+
+            <div>
+              <Label className="text-foreground">Compatibility Notes</Label>
+              <Textarea
+                value={formData.compatibility_notes}
+                onChange={(e) => setFormData({ ...formData, compatibility_notes: e.target.value })}
+                placeholder="Compatibility information..."
+                className="bg-muted border-border text-white mt-1 min-h-[60px]"
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex-1 bg-btn-green hover:bg-btn-green/80 text-btn-green-foreground"
+              >
+                {isSubmitting ? 'Adding...' : 'Add Part'}
+              </Button>
+              <Button
+                type="button"
+                onClick={resetForm}
+                variant="outline"
+                className="border-border text-foreground"
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

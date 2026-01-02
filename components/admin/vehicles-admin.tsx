@@ -424,7 +424,7 @@ export default function VehiclesAdmin() {
                 />
               </div>
               <div>
-                <Label className="text-foreground">Current Mileage (km)</Label>
+                <Label className="text-foreground">Last Recorded Mileage (km)</Label>
                 <Input
                   type="number"
                   min={0}
