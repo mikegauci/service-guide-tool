@@ -16,7 +16,7 @@ export default function VehicleSelector() {
   return (
     <div className="flex gap-4 items-end flex-col md:flex-row">
       <div className="flex-1 w-full">
-        <label className="text-sm font-medium text-slate-300 mb-2 block">
+        <label className="text-sm font-medium text-foreground mb-2 block">
           Select Vehicle
         </label>
         <Select
@@ -26,10 +26,10 @@ export default function VehicleSelector() {
             if (vehicle) setSelectedVehicle(vehicle);
           }}
         >
-          <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
+          <SelectTrigger className="bg-muted border-border text-white">
             <SelectValue placeholder="Choose a vehicle" />
           </SelectTrigger>
-          <SelectContent className="bg-slate-700 border-slate-600">
+          <SelectContent className="bg-card border-border">
             {vehicles.map((vehicle) => (
               <SelectItem key={vehicle.id} value={vehicle.id} className="text-white">
                 {vehicle.year} {vehicle.make} {vehicle.model}
@@ -40,8 +40,8 @@ export default function VehicleSelector() {
       </div>
 
       {selectedVehicle && (
-        <Card className="bg-slate-700 border-slate-600 px-4 py-2 min-w-max">
-          <p className="text-xs text-slate-400">Current Mileage</p>
+        <Card className="bg-card border-border px-4 py-2 min-w-max">
+          <p className="text-xs text-muted-foreground">Current Mileage</p>
           <p className="text-lg font-bold text-white">{selectedVehicle.current_mileage.toLocaleString()} km</p>
         </Card>
       )}

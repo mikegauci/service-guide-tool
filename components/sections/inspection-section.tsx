@@ -106,7 +106,7 @@ export default function InspectionSection({ vehicleId }: InspectionSectionProps)
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-700 border-slate-600">
+      <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle className="text-white">Inspection Checklist</CardTitle>
         </CardHeader>
@@ -114,18 +114,18 @@ export default function InspectionSection({ vehicleId }: InspectionSectionProps)
           <div className="flex items-center justify-between flex-col md:flex-row gap-4">
             <div className="w-full md:w-1/2">
               <div className="flex justify-between mb-2">
-                <span className="text-sm text-slate-400">Progress</span>
+                <span className="text-sm text-muted-foreground">Progress</span>
                 <span className="text-sm font-semibold text-white">{completionPercentage}%</span>
               </div>
-              <div className="w-full bg-slate-600 rounded-full h-2">
+              <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className="bg-green-500 h-2 rounded-full transition-all"
+                  className="bg-btn-green h-2 rounded-full transition-all"
                   style={{ width: `${completionPercentage}%` }}
                 />
               </div>
             </div>
             <div className="text-right">
-              <p className="text-sm text-slate-400">Completed</p>
+              <p className="text-sm text-muted-foreground">Completed</p>
               <p className="text-2xl font-bold text-white">
                 {completedCount}/{totalCount}
               </p>
@@ -135,7 +135,7 @@ export default function InspectionSection({ vehicleId }: InspectionSectionProps)
           <select
             value={filterCategory}
             onChange={(e) => setFilterCategory(e.target.value)}
-            className="w-full bg-slate-600 border border-slate-500 text-white rounded-md px-3 py-2 text-sm"
+            className="w-full bg-muted border border-border text-white rounded-md px-3 py-2 text-sm"
           >
             <option value="">All Categories</option>
             {categories.map((cat) => (
@@ -148,8 +148,8 @@ export default function InspectionSection({ vehicleId }: InspectionSectionProps)
       </Card>
 
       {categories.length === 0 ? (
-        <Card className="bg-slate-700 border-slate-600">
-          <CardContent className="pt-6 text-center text-slate-400">
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6 text-center text-muted-foreground">
             No inspection items found for this vehicle
           </CardContent>
         </Card>
@@ -161,10 +161,10 @@ export default function InspectionSection({ vehicleId }: InspectionSectionProps)
               {groupedInspections[category].map((item) => (
                 <Card
                   key={item.id}
-                  className="bg-slate-700 border-slate-600 overflow-hidden transition-colors"
+                  className="bg-card border-border overflow-hidden transition-colors"
                 >
                   <div
-                    className="p-4 flex gap-3 items-start cursor-pointer hover:bg-slate-600/50"
+                    className="p-4 flex gap-3 items-start cursor-pointer hover:bg-muted/50"
                     onClick={() => toggleExpanded(item.id)}
                   >
                     <div onClick={(e) => e.stopPropagation()}>
@@ -179,13 +179,13 @@ export default function InspectionSection({ vehicleId }: InspectionSectionProps)
                         <div>
                           <h4
                             className={`font-semibold ${
-                              item.completed ? 'text-slate-400 line-through' : 'text-white'
+                              item.completed ? 'text-muted-foreground line-through' : 'text-white'
                             }`}
                           >
                             {item.title}
                           </h4>
                           {item.description && (
-                            <p className="text-sm text-slate-400 mt-1">{item.description}</p>
+                            <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
                           )}
                         </div>
                         <div className="flex items-center gap-2 flex-shrink-0">
@@ -195,9 +195,9 @@ export default function InspectionSection({ vehicleId }: InspectionSectionProps)
                             </Badge>
                           )}
                           {item.expanded ? (
-                            <ChevronUp className="h-4 w-4 text-slate-400" />
+                            <ChevronUp className="h-4 w-4 text-muted-foreground" />
                           ) : (
-                            <ChevronDown className="h-4 w-4 text-slate-400" />
+                            <ChevronDown className="h-4 w-4 text-muted-foreground" />
                           )}
                         </div>
                       </div>
@@ -205,25 +205,25 @@ export default function InspectionSection({ vehicleId }: InspectionSectionProps)
                   </div>
 
                   {item.expanded && (
-                    <div className="border-t border-slate-600 p-4 space-y-4 bg-slate-800/50">
+                    <div className="border-t border-border p-4 space-y-4 bg-muted/50">
                       {item.specifications && (
                         <div>
-                          <p className="text-xs font-semibold text-slate-400 uppercase">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase">
                             Specifications
                           </p>
-                          <p className="text-sm text-slate-300 mt-1">{item.specifications}</p>
+                          <p className="text-sm text-foreground mt-1">{item.specifications}</p>
                         </div>
                       )}
 
                       <div>
-                        <label className="text-xs font-semibold text-slate-400 uppercase block mb-2">
+                        <label className="text-xs font-semibold text-muted-foreground uppercase block mb-2">
                           Inspection Notes
                         </label>
                         <Textarea
                           placeholder="Document findings here..."
                           value={item.notes}
                           onChange={(e) => updateNotes(item.id, e.target.value)}
-                          className="bg-slate-700 border-slate-600 text-white text-sm min-h-[80px]"
+                          className="bg-muted border-border text-white text-sm min-h-[80px]"
                           onClick={(e) => e.stopPropagation()}
                         />
                       </div>

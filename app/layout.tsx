@@ -7,8 +7,12 @@ import { Toaster } from 'sonner';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Service Guide Pro',
+  title: 'Service Guide Tool',
   description: 'Personal vehicle service guide and maintenance tracker',
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     images: [
       {

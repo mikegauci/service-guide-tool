@@ -23,7 +23,7 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-white text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
           <p>Loading vehicles...</p>
@@ -33,23 +33,22 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
+    <div className="min-h-screen bg-black">
       <div className="max-w-7xl mx-auto">
-        <header className="border-b border-slate-700 bg-slate-800/50 backdrop-blur-sm sticky top-0 z-50">
+        <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
           <div className="px-4 py-6">
             <div className="flex items-center justify-between gap-4 mb-6 flex-col md:flex-row">
               <div>
                 <h1 className="text-3xl font-bold text-white flex items-center gap-2">
-                  <Wrench className="h-8 w-8 text-blue-400" />
-                  Service Guide Pro
+                  <Wrench className="h-8 w-8 text-btn-blue" />
+                  Service Guide Tool
                 </h1>
-                <p className="text-slate-400 mt-1">Personal vehicle maintenance tracker</p>
+                <p className="text-muted-foreground mt-1">Personal vehicle maintenance tracker</p>
               </div>
               <Button
                 onClick={() => setShowVehicleManager(true)}
-                variant="outline"
                 size="lg"
-                className="text-white border-slate-600 hover:bg-slate-700"
+                className="bg-btn-blue hover:bg-btn-blue/80 text-btn-blue-foreground"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Add Vehicle
@@ -62,9 +61,9 @@ export default function Home() {
 
         <main className="px-4 py-8">
           {vehicles.length === 0 ? (
-            <Alert className="border-yellow-600 bg-yellow-500/10 mb-6">
-              <AlertCircle className="h-4 w-4 text-yellow-600" />
-              <AlertDescription className="text-yellow-600">
+            <Alert className="border-yellow-500/50 bg-yellow-500/10 mb-6">
+              <AlertCircle className="h-4 w-4 text-yellow-500" />
+              <AlertDescription className="text-yellow-400">
                 No vehicles added yet. Click "Add Vehicle" to get started.
               </AlertDescription>
             </Alert>
@@ -74,14 +73,14 @@ export default function Home() {
                 <h2 className="text-2xl font-bold text-white mb-2">
                   {selectedVehicle.year} {selectedVehicle.make} {selectedVehicle.model}
                 </h2>
-                <p className="text-slate-300 mb-4">
+                <p className="text-muted-foreground mb-4">
                   Engine: {selectedVehicle.engine} | Transmission: {selectedVehicle.transmission}
                 </p>
                 <MileageReminders vehicleId={selectedVehicle.id} />
               </div>
 
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-5 bg-slate-700 mb-8">
+                <TabsList className="grid w-full grid-cols-5 bg-card mb-8">
                   <TabsTrigger value="overview" className="text-xs md:text-sm">
                     Overview
                   </TabsTrigger>

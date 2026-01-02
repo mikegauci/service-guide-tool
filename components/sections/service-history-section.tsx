@@ -142,22 +142,22 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-700 border-slate-600">
+      <Card className="bg-card border-border">
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
             <CardTitle className="text-white">Service History & Summary</CardTitle>
           </div>
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-green-600 hover:bg-green-700 text-white">
+              <Button className="bg-btn-green hover:bg-btn-green/80 text-btn-green-foreground">
                 <Plus className="h-4 w-4 mr-2" />
                 New Service
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-h-[90vh] overflow-y-auto bg-slate-800 border-slate-700">
+            <DialogContent className="max-h-[90vh] overflow-y-auto bg-card border-border">
               <DialogHeader>
                 <DialogTitle className="text-white">Record Service Appointment</DialogTitle>
-                <DialogDescription className="text-slate-400">
+                <DialogDescription className="text-muted-foreground">
                   Document a completed service appointment
                 </DialogDescription>
               </DialogHeader>
@@ -165,18 +165,18 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-slate-300">Service Date</Label>
+                    <Label className="text-foreground">Service Date</Label>
                     <Input
                       type="date"
                       value={formData.service_date}
                       onChange={(e) =>
                         setFormData({ ...formData, service_date: e.target.value })
                       }
-                      className="bg-slate-700 border-slate-600 text-white mt-1"
+                      className="bg-muted border-border text-white mt-1"
                     />
                   </div>
                   <div>
-                    <Label className="text-slate-300">Mileage (km)</Label>
+                    <Label className="text-foreground">Mileage (km)</Label>
                     <Input
                       type="number"
                       min={0}
@@ -187,25 +187,25 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
                           mileage_at_service: parseInt(e.target.value),
                         })
                       }
-                      className="bg-slate-700 border-slate-600 text-white mt-1"
+                      className="bg-muted border-border text-white mt-1"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label className="text-slate-300">Mechanic Name *</Label>
+                  <Label className="text-foreground">Mechanic Name *</Label>
                   <Input
                     value={formData.mechanic_name}
                     onChange={(e) =>
                       setFormData({ ...formData, mechanic_name: e.target.value })
                     }
                     placeholder="Who performed the service?"
-                    className="bg-slate-700 border-slate-600 text-white mt-1"
+                    className="bg-muted border-border text-white mt-1"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-slate-300">Total Cost (€)</Label>
+                  <Label className="text-foreground">Total Cost (€)</Label>
                   <Input
                     type="number"
                     step={0.01}
@@ -214,24 +214,24 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
                     onChange={(e) =>
                       setFormData({ ...formData, total_cost: parseFloat(e.target.value) })
                     }
-                    className="bg-slate-700 border-slate-600 text-white mt-1"
+                    className="bg-muted border-border text-white mt-1"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-slate-300">Service Notes</Label>
+                  <Label className="text-foreground">Service Notes</Label>
                   <Textarea
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                     placeholder="Document what was done..."
-                    className="bg-slate-700 border-slate-600 text-white mt-1 min-h-[100px]"
+                    className="bg-muted border-border text-white mt-1 min-h-[100px]"
                   />
                 </div>
 
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white"
+                  className="w-full bg-btn-green hover:bg-btn-green/80 text-btn-green-foreground"
                 >
                   {isSubmitting ? 'Saving...' : 'Record Service'}
                 </Button>
@@ -242,20 +242,20 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
       </Card>
 
       {services.length > 0 && (
-        <Card className="bg-blue-500/10 border-blue-600">
+        <Card className="bg-btn-blue/10 border-btn-blue/50">
           <CardContent className="pt-6">
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <p className="text-sm text-slate-400">Total Services</p>
+                <p className="text-sm text-muted-foreground">Total Services</p>
                 <p className="text-2xl font-bold text-white">{services.length}</p>
               </div>
               <div>
-                <p className="text-sm text-slate-400">Total Spent</p>
-                <p className="text-2xl font-bold text-green-400">€{totalSpent.toFixed(2)}</p>
+                <p className="text-sm text-muted-foreground">Total Spent</p>
+                <p className="text-2xl font-bold text-btn-green">€{totalSpent.toFixed(2)}</p>
               </div>
               <div>
-                <p className="text-sm text-slate-400">Average Cost</p>
-                <p className="text-2xl font-bold text-blue-400">
+                <p className="text-sm text-muted-foreground">Average Cost</p>
+                <p className="text-2xl font-bold text-btn-blue">
                   €{(totalSpent / services.length).toFixed(2)}
                 </p>
               </div>
@@ -265,39 +265,39 @@ export default function ServiceHistorySection({ vehicleId }: ServiceHistorySecti
       )}
 
       {services.length === 0 ? (
-        <Card className="bg-slate-700 border-slate-600">
-          <CardContent className="pt-6 text-center text-slate-400">
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6 text-center text-muted-foreground">
             No service records yet. Start by recording a service appointment.
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-3">
           {services.map((service) => (
-            <Card key={service.id} className="bg-slate-700 border-slate-600">
+            <Card key={service.id} className="bg-card border-border">
               <CardContent className="p-4">
                 <div className="flex items-start justify-between gap-4 flex-col md:flex-row">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
-                      <Calendar className="h-4 w-4 text-blue-400" />
+                      <Calendar className="h-4 w-4 text-btn-blue" />
                       <p className="font-semibold text-white">
                         {new Date(service.service_date).toLocaleDateString()}
                       </p>
-                      <p className="text-sm text-slate-400">•</p>
-                      <p className="text-sm text-slate-400">
+                      <p className="text-sm text-muted-foreground">•</p>
+                      <p className="text-sm text-muted-foreground">
                         {service.mileage_at_service.toLocaleString()} km
                       </p>
                     </div>
-                    <p className="text-sm text-slate-400 mb-2">
+                    <p className="text-sm text-muted-foreground mb-2">
                       Mechanic: <span className="text-white">{service.mechanic_name}</span>
                     </p>
                     {service.notes && (
-                      <p className="text-sm text-slate-300 bg-slate-800 rounded p-2 whitespace-pre-wrap">
+                      <p className="text-sm text-foreground bg-muted rounded p-2 whitespace-pre-wrap">
                         {service.notes}
                       </p>
                     )}
                   </div>
                   <div className="flex items-end gap-2 flex-col">
-                    <p className="text-lg font-bold text-green-400">€{service.total_cost.toFixed(2)}</p>
+                    <p className="text-lg font-bold text-btn-green">€{service.total_cost.toFixed(2)}</p>
                     <Button
                       onClick={() => handleDelete(service.id)}
                       variant="ghost"

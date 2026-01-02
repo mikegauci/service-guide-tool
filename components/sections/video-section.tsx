@@ -96,25 +96,25 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-700 border-slate-600">
+      <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle className="text-white">Video Tutorial Library</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search videos..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
+                className="pl-10 bg-muted border-border text-white placeholder:text-muted-foreground"
               />
             </div>
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="bg-slate-600 border border-slate-500 text-white rounded-md px-3 py-2 text-sm"
+              className="bg-muted border border-border text-white rounded-md px-3 py-2 text-sm"
             >
               <option value="">All Categories</option>
               {categories.map((cat) => (
@@ -126,7 +126,7 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
           </div>
 
           {videos.length > 0 && (
-            <div className="bg-blue-500/10 border border-blue-600 rounded-md p-3">
+            <div className="bg-btn-blue/10 border border-btn-blue/50 rounded-md p-3">
               <p className="text-white font-semibold">
                 Watched: {watchedCount}/{videos.length} videos
               </p>
@@ -136,8 +136,8 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
       </Card>
 
       {categories.length === 0 ? (
-        <Card className="bg-slate-700 border-slate-600">
-          <CardContent className="pt-6 text-center text-slate-400">
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6 text-center text-muted-foreground">
             No videos found for this vehicle
           </CardContent>
         </Card>
@@ -149,8 +149,8 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
               {groupedVideos[category].map((video) => (
                 <Card
                   key={video.id}
-                  className={`border-slate-600 overflow-hidden ${
-                    watchedVideos.has(video.id) ? 'bg-slate-700/50' : 'bg-slate-700'
+                  className={`border-border overflow-hidden ${
+                    watchedVideos.has(video.id) ? 'bg-card/50' : 'bg-card'
                   }`}
                 >
                   <CardContent className="p-4 space-y-3">
@@ -159,7 +159,7 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
                         <h4
                           className={`font-semibold flex-1 ${
                             watchedVideos.has(video.id)
-                              ? 'text-slate-400 line-through'
+                              ? 'text-muted-foreground line-through'
                               : 'text-white'
                           }`}
                         >
@@ -172,14 +172,14 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
                         )}
                       </div>
                       {video.description && (
-                        <p className="text-xs text-slate-400">{video.description}</p>
+                        <p className="text-xs text-muted-foreground">{video.description}</p>
                       )}
                     </div>
 
                     <div className="flex gap-2 items-center flex-wrap">
                       <Badge
                         variant="secondary"
-                        className="text-xs bg-slate-600 text-slate-300"
+                        className="text-xs bg-muted text-foreground"
                       >
                         {video.difficulty_level}
                       </Badge>
@@ -189,7 +189,7 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
                       <Button
                         asChild
                         size="sm"
-                        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                        className="flex-1 bg-btn-blue hover:bg-btn-blue/80 text-btn-blue-foreground"
                       >
                         <a
                           href={video.youtube_link}
@@ -204,10 +204,10 @@ export default function VideoSection({ vehicleId }: VideoSectionProps) {
                         onClick={() => toggleWatched(video.id)}
                         variant="outline"
                         size="sm"
-                        className={`text-slate-300 border-slate-500 ${
+                        className={`border-border ${
                           watchedVideos.has(video.id)
-                            ? 'bg-green-500/20 border-green-600 text-green-400'
-                            : ''
+                            ? 'bg-btn-green/20 border-btn-green/50 text-btn-green'
+                            : 'text-foreground'
                         }`}
                       >
                         {watchedVideos.has(video.id) ? 'Mark Unwatched' : 'Mark Watched'}

@@ -83,12 +83,12 @@ export default function MileageReminders({ vehicleId }: MileageRemindersProps) {
   return (
     <div className="space-y-3">
       {hasOverduServices && (
-        <Card className="bg-red-500/10 border-red-600 p-3">
+        <Card className="bg-red-500/10 border-red-500/50 p-3">
           <div className="flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
             <div>
-              <p className="font-semibold text-red-500">Overdue Service</p>
-              <p className="text-sm text-red-400">
+              <p className="font-semibold text-red-400">Overdue Service</p>
+              <p className="text-sm text-red-300">
                 {servicesDue.filter((s) => s.isDue).length} service(s) overdue for maintenance
               </p>
             </div>
@@ -102,21 +102,21 @@ export default function MileageReminders({ vehicleId }: MileageRemindersProps) {
             key={service.id}
             className={`p-3 ${
               service.isDue
-                ? 'bg-red-500/10 border-red-600'
-                : 'bg-blue-500/10 border-blue-600'
+                ? 'bg-red-500/10 border-red-500/50'
+                : 'bg-btn-blue/10 border-btn-blue/50'
             }`}
           >
             <div className="flex items-start justify-between">
               <div>
                 <p className="font-medium text-white text-sm">{service.service_type}</p>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-muted-foreground">
                   Due at {service.nextDueMileage.toLocaleString()} km
                 </p>
               </div>
               {service.isDue ? (
                 <AlertCircle className="h-4 w-4 text-red-500 flex-shrink-0" />
               ) : (
-                <span className="text-xs font-semibold text-blue-400">
+                <span className="text-xs font-semibold text-btn-blue">
                   {service.milesUntilDue.toLocaleString()} km
                 </span>
               )}

@@ -91,7 +91,7 @@ export default function DiagnosticsSection({ vehicleId }: DiagnosticsSectionProp
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-700 border-slate-600">
+      <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle className="text-white">Diagnostic Procedures</CardTitle>
         </CardHeader>
@@ -99,7 +99,7 @@ export default function DiagnosticsSection({ vehicleId }: DiagnosticsSectionProp
           <select
             value={filterSystem}
             onChange={(e) => setFilterSystem(e.target.value)}
-            className="w-full bg-slate-600 border border-slate-500 text-white rounded-md px-3 py-2 text-sm"
+            className="w-full bg-muted border border-border text-white rounded-md px-3 py-2 text-sm"
           >
             <option value="">All Systems</option>
             {systems.map((system) => (
@@ -112,8 +112,8 @@ export default function DiagnosticsSection({ vehicleId }: DiagnosticsSectionProp
       </Card>
 
       {systems.length === 0 ? (
-        <Card className="bg-slate-700 border-slate-600">
-          <CardContent className="pt-6 text-center text-slate-400">
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6 text-center text-muted-foreground">
             No diagnostic procedures found for this vehicle
           </CardContent>
         </Card>
@@ -125,44 +125,44 @@ export default function DiagnosticsSection({ vehicleId }: DiagnosticsSectionProp
               {groupedDiagnostics[system].map((diagnostic) => (
                 <Card
                   key={diagnostic.id}
-                  className="bg-slate-700 border-slate-600 overflow-hidden transition-colors"
+                  className="bg-card border-border overflow-hidden transition-colors"
                 >
                   <div
-                    className="p-4 flex gap-3 items-start cursor-pointer hover:bg-slate-600/50"
+                    className="p-4 flex gap-3 items-start cursor-pointer hover:bg-muted/50"
                     onClick={() => toggleExpanded(diagnostic.id)}
                   >
                     <div className="flex-1 min-w-0">
                       <h4 className="font-semibold text-white">{diagnostic.title}</h4>
                       {diagnostic.description && (
-                        <p className="text-sm text-slate-400 mt-1">{diagnostic.description}</p>
+                        <p className="text-sm text-muted-foreground mt-1">{diagnostic.description}</p>
                       )}
                     </div>
                     {diagnostic.expanded ? (
-                      <ChevronUp className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                      <ChevronUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                     ) : (
-                      <ChevronDown className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                      <ChevronDown className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                     )}
                   </div>
 
                   {diagnostic.expanded && (
-                    <div className="border-t border-slate-600 p-4 space-y-4 bg-slate-800/50">
+                    <div className="border-t border-border p-4 space-y-4 bg-muted/50">
                       {diagnostic.steps && (
                         <div>
-                          <p className="text-xs font-semibold text-slate-400 uppercase mb-2">
+                          <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">
                             Steps
                           </p>
-                          <div className="text-sm text-slate-300 space-y-2 whitespace-pre-wrap">
+                          <div className="text-sm text-foreground space-y-2 whitespace-pre-wrap">
                             {diagnostic.steps}
                           </div>
                         </div>
                       )}
 
                       {diagnostic.warnings && (
-                        <div className="bg-yellow-500/10 border border-yellow-600 rounded-md p-3 flex gap-3">
+                        <div className="bg-yellow-500/10 border border-yellow-500/50 rounded-md p-3 flex gap-3">
                           <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
                           <div>
-                            <p className="text-xs font-semibold text-yellow-500 uppercase">Warning</p>
-                            <p className="text-sm text-yellow-400 mt-1 whitespace-pre-wrap">
+                            <p className="text-xs font-semibold text-yellow-400 uppercase">Warning</p>
+                            <p className="text-sm text-yellow-300 mt-1 whitespace-pre-wrap">
                               {diagnostic.warnings}
                             </p>
                           </div>
@@ -170,14 +170,14 @@ export default function DiagnosticsSection({ vehicleId }: DiagnosticsSectionProp
                       )}
 
                       <div>
-                        <label className="text-xs font-semibold text-slate-400 uppercase block mb-2">
+                        <label className="text-xs font-semibold text-muted-foreground uppercase block mb-2">
                           Diagnostic Findings
                         </label>
                         <Textarea
                           placeholder="Record test results and findings..."
                           value={diagnostic.notes}
                           onChange={(e) => updateNotes(diagnostic.id, e.target.value)}
-                          className="bg-slate-700 border-slate-600 text-white text-sm min-h-[100px]"
+                          className="bg-muted border-border text-white text-sm min-h-[100px]"
                           onClick={(e) => e.stopPropagation()}
                         />
                       </div>

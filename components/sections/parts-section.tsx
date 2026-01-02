@@ -93,25 +93,25 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-700 border-slate-600">
+      <Card className="bg-card border-border">
         <CardHeader>
           <CardTitle className="text-white">Parts List & Purchasing</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search parts..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-slate-600 border-slate-500 text-white placeholder:text-slate-400"
+                className="pl-10 bg-muted border-border text-white placeholder:text-muted-foreground"
               />
             </div>
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="bg-slate-600 border border-slate-500 text-white rounded-md px-3 py-2 text-sm"
+              className="bg-muted border border-border text-white rounded-md px-3 py-2 text-sm"
             >
               <option value="">All Categories</option>
               {categories.map((cat) => (
@@ -123,11 +123,11 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
           </div>
 
           {selectedTotal > 0 && (
-            <div className="bg-blue-500/10 border border-blue-600 rounded-md p-3">
+            <div className="bg-btn-blue/10 border border-btn-blue/50 rounded-md p-3">
               <p className="text-white font-semibold">
                 Selected Total: €{selectedTotal.toFixed(2)}
               </p>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-muted-foreground">
                 {selectedParts.size} item(s) selected
               </p>
             </div>
@@ -136,8 +136,8 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
       </Card>
 
       {categories.length === 0 ? (
-        <Card className="bg-slate-700 border-slate-600">
-          <CardContent className="pt-6 text-center text-slate-400">
+        <Card className="bg-card border-border">
+          <CardContent className="pt-6 text-center text-muted-foreground">
             No parts found for this vehicle
           </CardContent>
         </Card>
@@ -147,7 +147,7 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
             <h3 className="text-lg font-semibold text-white px-1">{category}</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {groupedParts[category].map((part) => (
-                <Card key={part.id} className="bg-slate-700 border-slate-600 overflow-hidden">
+                <Card key={part.id} className="bg-card border-border overflow-hidden">
                   <CardContent className="p-4 space-y-3">
                     <div className="flex gap-3">
                       <Checkbox
@@ -158,20 +158,20 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
                       <div className="flex-1">
                         <h4 className="font-semibold text-white">{part.name}</h4>
                         {part.specifications && (
-                          <p className="text-xs text-slate-400">{part.specifications}</p>
+                          <p className="text-xs text-muted-foreground">{part.specifications}</p>
                         )}
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-xl font-bold text-green-400">€{part.price_eur.toFixed(2)}</p>
-                        <p className="text-xs text-slate-500">{part.supplier_name}</p>
+                        <p className="text-xl font-bold text-btn-green">€{part.price_eur.toFixed(2)}</p>
+                        <p className="text-xs text-muted-foreground">{part.supplier_name}</p>
                       </div>
                     </div>
 
                     {part.compatibility_notes && (
-                      <p className="text-xs text-slate-400 bg-slate-800 rounded p-2">
+                      <p className="text-xs text-muted-foreground bg-muted rounded p-2">
                         {part.compatibility_notes}
                       </p>
                     )}
@@ -179,9 +179,8 @@ export default function PartsSection({ vehicleId }: PartsSectionProps) {
                     {part.purchase_link && (
                       <Button
                         asChild
-                        variant="outline"
                         size="sm"
-                        className="w-full text-slate-300 border-slate-500 hover:bg-slate-600"
+                        className="w-full bg-btn-white hover:bg-btn-white/80 text-btn-white-foreground"
                       >
                         <a href={part.purchase_link} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="h-4 w-4 mr-2" />

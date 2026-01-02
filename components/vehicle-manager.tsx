@@ -75,10 +75,10 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto bg-slate-800 border-slate-700">
+      <DialogContent className="max-h-[90vh] overflow-y-auto bg-card border-border">
         <DialogHeader>
           <DialogTitle className="text-white">Vehicle Management</DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-muted-foreground">
             Add a new vehicle or manage existing ones
           </DialogDescription>
         </DialogHeader>
@@ -87,7 +87,7 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Year *</Label>
+                <Label className="text-foreground">Year *</Label>
                 <Input
                   type="number"
                   min={1990}
@@ -96,55 +96,55 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
                   onChange={(e) =>
                     setFormData({ ...formData, year: parseInt(e.target.value) })
                   }
-                  className="bg-slate-700 border-slate-600 text-white mt-1"
+                  className="bg-muted border-border text-white mt-1"
                 />
               </div>
               <div>
-                <Label className="text-slate-300">Make *</Label>
+                <Label className="text-foreground">Make *</Label>
                 <Input
                   value={formData.make}
                   onChange={(e) => setFormData({ ...formData, make: e.target.value })}
                   placeholder="e.g., Honda"
-                  className="bg-slate-700 border-slate-600 text-white mt-1"
+                  className="bg-muted border-border text-white mt-1"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Model *</Label>
+                <Label className="text-foreground">Model *</Label>
                 <Input
                   value={formData.model}
                   onChange={(e) => setFormData({ ...formData, model: e.target.value })}
                   placeholder="e.g., NSX"
-                  className="bg-slate-700 border-slate-600 text-white mt-1"
+                  className="bg-muted border-border text-white mt-1"
                 />
               </div>
               <div>
-                <Label className="text-slate-300">Engine</Label>
+                <Label className="text-foreground">Engine</Label>
                 <Input
                   value={formData.engine}
                   onChange={(e) => setFormData({ ...formData, engine: e.target.value })}
                   placeholder="e.g., 3.0L V6"
-                  className="bg-slate-700 border-slate-600 text-white mt-1"
+                  className="bg-muted border-border text-white mt-1"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label className="text-slate-300">Transmission</Label>
+                <Label className="text-foreground">Transmission</Label>
                 <Input
                   value={formData.transmission}
                   onChange={(e) =>
                     setFormData({ ...formData, transmission: e.target.value })
                   }
                   placeholder="e.g., Manual"
-                  className="bg-slate-700 border-slate-600 text-white mt-1"
+                  className="bg-muted border-border text-white mt-1"
                 />
               </div>
               <div>
-                <Label className="text-slate-300">Current Mileage (km)</Label>
+                <Label className="text-foreground">Current Mileage (km)</Label>
                 <Input
                   type="number"
                   min={0}
@@ -152,25 +152,25 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
                   onChange={(e) =>
                     setFormData({ ...formData, current_mileage: parseInt(e.target.value) })
                   }
-                  className="bg-slate-700 border-slate-600 text-white mt-1"
+                  className="bg-muted border-border text-white mt-1"
                 />
               </div>
             </div>
 
             <div>
-              <Label className="text-slate-300">Notes</Label>
+              <Label className="text-foreground">Notes</Label>
               <Input
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 placeholder="Any additional notes about the vehicle"
-                className="bg-slate-700 border-slate-600 text-white mt-1"
+                className="bg-muted border-border text-white mt-1"
               />
             </div>
 
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              className="w-full bg-btn-green hover:bg-btn-green/80 text-btn-green-foreground"
             >
               {isSubmitting ? 'Adding...' : 'Add Vehicle'}
             </Button>
@@ -183,13 +183,13 @@ export default function VehicleManager({ isOpen, onClose }: VehicleManagerProps)
                 {vehicles.map((vehicle) => (
                   <Card
                     key={vehicle.id}
-                    className="bg-slate-700 border-slate-600 flex items-center justify-between p-4"
+                    className="bg-muted border-border flex items-center justify-between p-4"
                   >
                     <div>
                       <p className="font-semibold text-white">
                         {vehicle.year} {vehicle.make} {vehicle.model}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-muted-foreground">
                         {vehicle.current_mileage.toLocaleString()} km
                       </p>
                     </div>

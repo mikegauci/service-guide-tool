@@ -53,12 +53,17 @@ const config: Config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
-        chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
+        'btn-white': {
+          DEFAULT: 'hsl(var(--button-white))',
+          foreground: 'hsl(var(--button-white-foreground))',
+        },
+        'btn-green': {
+          DEFAULT: 'hsl(var(--button-green))',
+          foreground: 'hsl(var(--button-green-foreground))',
+        },
+        'btn-blue': {
+          DEFAULT: 'hsl(var(--button-blue))',
+          foreground: 'hsl(var(--button-blue-foreground))',
         },
       },
       keyframes: {
