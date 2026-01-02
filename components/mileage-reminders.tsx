@@ -141,9 +141,6 @@ export default function MileageReminders({ vehicleId }: MileageRemindersProps) {
   };
 
   const servicesDue = getServicesDue();
-  const hasOverduServices = servicesDue.some((s) => s.isDue);
-  const servicesWithNoRecord = servicesDue.filter((s) => s.hasNoServiceRecord).length;
-  const overdueCount = servicesDue.filter((s) => s.isDue).length;
 
   if (servicesDue.length === 0) {
     return null;
@@ -151,25 +148,6 @@ export default function MileageReminders({ vehicleId }: MileageRemindersProps) {
 
   return (
     <div className="space-y-3">
-      {hasOverduServices && (
-        <Card className="bg-red-500/10 border-red-500/50 p-3">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="font-semibold text-red-400">Overdue Service</p>
-              <p className="text-sm text-red-300">
-                {overdueCount} service(s) overdue for maintenance
-                {servicesWithNoRecord > 0 && (
-                  <span className="block mt-1">
-                    ⚠️ {servicesWithNoRecord} service(s) have no records and need inspection
-                  </span>
-                )}
-              </p>
-            </div>
-          </div>
-        </Card>
-      )}
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-96 overflow-y-auto">
         {servicesDue.map((service) => (
           <Card
