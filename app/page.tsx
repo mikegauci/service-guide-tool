@@ -221,28 +221,40 @@ export default function Home() {
                   </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="overview" className="space-y-6">
-                  <ServiceHistorySection vehicleId={selectedVehicle.id} />
+                <TabsContent value="overview" className="space-y-6" forceMount>
+                  <div className={activeTab !== 'overview' ? 'hidden' : ''}>
+                    <ServiceHistorySection vehicleId={selectedVehicle.id} />
+                  </div>
                 </TabsContent>
 
-                <TabsContent value="reminders" className="space-y-6">
-                  <MileageReminders vehicleId={selectedVehicle.id} />
+                <TabsContent value="reminders" className="space-y-6" forceMount>
+                  <div className={activeTab !== 'reminders' ? 'hidden' : ''}>
+                    <MileageReminders vehicleId={selectedVehicle.id} />
+                  </div>
                 </TabsContent>
 
-                <TabsContent value="parts" className="space-y-6">
-                  <PartsSection vehicleId={selectedVehicle.id} />
+                <TabsContent value="parts" className="space-y-6" forceMount>
+                  <div className={activeTab !== 'parts' ? 'hidden' : ''}>
+                    <PartsSection vehicleId={selectedVehicle.id} />
+                  </div>
                 </TabsContent>
 
-                <TabsContent value="inspection" className="space-y-6">
-                  <InspectionSection vehicleId={selectedVehicle.id} />
+                <TabsContent value="inspection" className="space-y-6" forceMount>
+                  <div className={activeTab !== 'inspection' ? 'hidden' : ''}>
+                    <InspectionSection vehicleId={selectedVehicle.id} />
+                  </div>
                 </TabsContent>
 
-                <TabsContent value="diagnostics" className="space-y-6">
-                  <DiagnosticsSection vehicleId={selectedVehicle.id} />
+                <TabsContent value="diagnostics" className="space-y-6" forceMount>
+                  <div className={activeTab !== 'diagnostics' ? 'hidden' : ''}>
+                    <DiagnosticsSection vehicleId={selectedVehicle.id} />
+                  </div>
                 </TabsContent>
 
-                <TabsContent value="videos" className="space-y-6">
-                  <VideoSection vehicleId={selectedVehicle.id} />
+                <TabsContent value="videos" className="space-y-6" forceMount>
+                  <div className={activeTab !== 'videos' ? 'hidden' : ''}>
+                    <VideoSection vehicleId={selectedVehicle.id} />
+                  </div>
                 </TabsContent>
               </Tabs>
             </>
