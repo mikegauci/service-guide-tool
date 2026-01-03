@@ -378,7 +378,7 @@ export default function IssuesSection({ vehicleId }: IssuesSectionProps) {
           {filteredIssues.map((issue) => (
             <Card key={issue.id} className="bg-card border-border overflow-hidden">
               {issue.image_url && (
-                <div className="w-full h-48 bg-black overflow-hidden">
+                <div className="w-full h-64 bg-black overflow-hidden">
                   <img
                     src={issue.image_url}
                     alt={issue.title}
